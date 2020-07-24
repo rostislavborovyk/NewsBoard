@@ -1,12 +1,23 @@
 from rest_framework.response import Response
-from rest_framework.status import HTTP_201_CREATED, HTTP_200_OK
+from rest_framework.status import (
+    HTTP_201_CREATED,
+    HTTP_200_OK,
+    HTTP_400_BAD_REQUEST,
+)
 from rest_framework.views import APIView
+from rest_framework.decorators import api_view
 
 from .models import Post, Comment
-from .serializers import PostsListSerializer, PostSerializer, \
-    PostDetailSerializer, CommentsListSerializer, CommentSerializer
+from .serializers import (
+    PostsListSerializer,
+    PostSerializer,
+    PostDetailSerializer,
+    CommentsListSerializer,
+    CommentSerializer,
+)
 
 
+# todo add pagination and ordering by id
 class CommentsListView(APIView):
     """Handling list of comments and creation of comment"""
 
@@ -50,8 +61,9 @@ class PostListView(APIView):
     def post(self, request):
         post = PostSerializer(data=request.data)
         if post.is_valid():
-            post.save()
-        return Response(status=HTTP_201_CREATED, data=post.data.get("id"))
+            post.id = request.data["id"]
+            return Response(status=HTTP_201_CREATED, data=post.data.get("id"))
+        return Response(status=HTTP_400_BAD_REQUEST, data=post.data.get("id"))
 
 
 class PostView(APIView):
@@ -69,3 +81,13 @@ class PostView(APIView):
         post = Post.objects.get(id=pk)
         post.delete()
         return Response(status=HTTP_200_OK)
+
+
+@api_view(["GET"])
+def upvote_post(request, pk):
+
+    post = Post.objects.get(id=pk)
+    post.amount_of_upvotes += 1
+    post.save()
+    return Response(status=HTTP_200_OK)
+

@@ -9,37 +9,73 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Post',
+            name="Post",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('title', models.CharField(max_length=60, verbose_name='Title')),
-                ('link', models.CharField(max_length=200, verbose_name='Link')),
-                ('creation_date', models.DateTimeField(auto_now_add=True, verbose_name='Creation date')),
-                ('amount_of_upvotes', models.IntegerField(validators=[django.core.validators.MinValueValidator(0)], verbose_name='Amount of upvotes')),
-                ('author_name', models.CharField(max_length=120, verbose_name='Author name')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("title", models.CharField(max_length=60, verbose_name="Title")),
+                ("link", models.CharField(max_length=200, verbose_name="Link")),
+                (
+                    "creation_date",
+                    models.DateTimeField(
+                        auto_now_add=True, verbose_name="Creation date"
+                    ),
+                ),
+                (
+                    "amount_of_upvotes",
+                    models.IntegerField(
+                        validators=[django.core.validators.MinValueValidator(0)],
+                        verbose_name="Amount of upvotes",
+                    ),
+                ),
+                (
+                    "author_name",
+                    models.CharField(max_length=120, verbose_name="Author name"),
+                ),
             ],
-            options={
-                'verbose_name': 'Post',
-                'verbose_name_plural': 'Posts',
-            },
+            options={"verbose_name": "Post", "verbose_name_plural": "Posts",},
         ),
         migrations.CreateModel(
-            name='Comment',
+            name="Comment",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('author_name', models.CharField(max_length=120, verbose_name='Author name')),
-                ('content', models.CharField(max_length=400, verbose_name='Content')),
-                ('creation_date', models.DateTimeField(auto_now_add=True, verbose_name='Creation date')),
-                ('post', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='board.Post')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "author_name",
+                    models.CharField(max_length=120, verbose_name="Author name"),
+                ),
+                ("content", models.CharField(max_length=400, verbose_name="Content")),
+                (
+                    "creation_date",
+                    models.DateTimeField(
+                        auto_now_add=True, verbose_name="Creation date"
+                    ),
+                ),
+                (
+                    "post",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="board.Post"
+                    ),
+                ),
             ],
-            options={
-                'verbose_name': 'Comment',
-                'verbose_name_plural': 'Comments',
-            },
+            options={"verbose_name": "Comment", "verbose_name_plural": "Comments",},
         ),
     ]
