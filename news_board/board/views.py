@@ -1,3 +1,6 @@
+from rest_framework.filters import OrderingFilter
+from rest_framework.generics import ListAPIView
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework.status import (
     HTTP_201_CREATED,
@@ -17,14 +20,16 @@ from .serializers import (
 )
 
 
-# todo add pagination and ordering by id
-class CommentsListView(APIView):
+class CommentsListView(ListAPIView):
     """Handling list of comments and creation of comment"""
 
-    def get(self, request):
-        comment = Comment.objects.all()
-        serializer = CommentsListSerializer(comment, many=True)
-        return Response(serializer.data)
+    filter_backends = [OrderingFilter]
+    pagination_class = PageNumberPagination
+    serializer_class = CommentsListSerializer
+
+    def get_queryset(self, *args, **kwargs):
+        comments = Comment.objects.all()
+        return comments
 
     def post(self, request):
         comment = CommentSerializer(data=request.data)
@@ -50,20 +55,23 @@ class CommentView(APIView):
         return Response(status=HTTP_200_OK)
 
 
-class PostListView(APIView):
+class PostListView(ListAPIView):
     """Handling list of posts and creation of post"""
 
-    def get(self, request):
+    filter_backends = [OrderingFilter]
+    pagination_class = PageNumberPagination
+    serializer_class = PostsListSerializer
+
+    def get_queryset(self, *args, **kwargs):
         posts = Post.objects.all()
-        serializer = PostsListSerializer(posts, many=True)
-        return Response(serializer.data)
+        return posts
 
     def post(self, request):
         post = PostSerializer(data=request.data)
         if post.is_valid():
-            post.id = request.data["id"]
-            return Response(status=HTTP_201_CREATED, data=post.data.get("id"))
-        return Response(status=HTTP_400_BAD_REQUEST, data=post.data.get("id"))
+            post.save()
+            return Response(status=HTTP_201_CREATED)
+        return Response(status=HTTP_400_BAD_REQUEST)
 
 
 class PostView(APIView):

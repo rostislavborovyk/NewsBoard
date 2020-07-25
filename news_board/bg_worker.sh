@@ -1,0 +1,1 @@
+celery -A news_board worker -B -l info

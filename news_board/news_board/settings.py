@@ -24,7 +24,11 @@ SECRET_KEY = "w^_&&c4@k$y@dzbjfp20ef!r6g*xtk_!d^d+bsxlzc$k!_(pmc"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "0.0.0.0",
+    "localhost",
+    "127.0.0.1",
+]
 
 # Application definition
 
@@ -48,6 +52,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = "news_board.urls"
@@ -73,13 +78,14 @@ WSGI_APPLICATION = "news_board.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
+# remote db hosted on heroku
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": "postgres",
-        "USER": "postgres",
-        "PASSWORD": "pgpass",
-        "HOST": "localhost",
+        "NAME": "d2td4vrrf2i615",
+        "USER": "wrtmxpqocnfanh",
+        "PASSWORD": "d64436659426c9df2292a788e1cd09740ae414abd9e7f1568b341f54bdc6a45f",
+        "HOST": "ec2-34-200-15-192.compute-1.amazonaws.com",
         "PORT": "5432",
     }
 }
@@ -97,8 +103,8 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 REST_FRAMEWORK = {
-    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
-    "PAGE_SIZE": 5,
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 2,
 }
 
 # Internationalization
