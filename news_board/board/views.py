@@ -21,7 +21,9 @@ from .serializers import (
 
 
 class CommentsListView(ListAPIView):
-    """Handling list of comments and creation of comment"""
+    """
+    Handling retrieving list of comments and creation of Comment
+    """
 
     filter_backends = [OrderingFilter]
     pagination_class = PageNumberPagination
@@ -39,6 +41,10 @@ class CommentsListView(ListAPIView):
 
 
 class CommentView(APIView):
+    """
+    Handling get, put and delete methods of single Comment
+    """
+
     def get(self, request, pk):
         comment = Comment.objects.get(id=pk)
         serializer = CommentSerializer(comment)
@@ -56,7 +62,9 @@ class CommentView(APIView):
 
 
 class PostListView(ListAPIView):
-    """Handling list of posts and creation of post"""
+    """
+    Handling retrieving list of posts and creation of Post
+    """
 
     filter_backends = [OrderingFilter]
     pagination_class = PageNumberPagination
@@ -75,6 +83,10 @@ class PostListView(ListAPIView):
 
 
 class PostView(APIView):
+    """
+    Handling get, put and delete methods of single Post
+    """
+
     def get(self, request, pk):
         post = Post.objects.get(id=pk)
         serializer = PostDetailSerializer(post)
@@ -93,9 +105,13 @@ class PostView(APIView):
 
 @api_view(["GET"])
 def upvote_post(request, pk):
-
+    """
+    Increments upvotes of a single post by 1
+    :param request: request from client
+    :param pk: id of post to increment upvotes
+    :return:
+    """
     post = Post.objects.get(id=pk)
     post.amount_of_upvotes += 1
     post.save()
     return Response(status=HTTP_200_OK)
-
