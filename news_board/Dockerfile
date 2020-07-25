@@ -9,8 +9,8 @@ COPY . /usr/src/app
 RUN poetry config virtualenvs.create false \
   && poetry install --no-interaction --no-ansi
 
-#EXPOSE 8000
-EXPOSE ${PORT}
+EXPOSE 8000
+#EXPOSE ${PORT}
 
 RUN chmod +x prod.sh
 RUN chmod +x /usr/src/app/news_board/wsgi.py
